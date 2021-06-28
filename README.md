@@ -1,2 +1,2 @@
 # simple-todo
-It is simple todo software with vue.js and Taliwind CSS.
+It is simple todo software with Vue.js and Taliwind CSS.
