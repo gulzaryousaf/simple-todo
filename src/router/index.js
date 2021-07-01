@@ -10,13 +10,20 @@ const routes = [
   {
     path: '/about',
     name: 'About',
-    component: () => import('../views/About.vue')
+    component: () => import( /* webpackChunkName: "About" */ '../views/About.vue'),
+    meta: {requiresAuth: true}
   }
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next)=>{
+  console.log('from: ', from);
+  console.log('to:', to);
+  next();
 })
 
 export default router

@@ -7,7 +7,7 @@ const store = createStore({
         // users,
     },
     state: {
-        isLogged: false,
+        isAuthenticated: false,
         cred: {
             email: '',
             password: ''
@@ -17,18 +17,18 @@ const store = createStore({
     mutations: {
         setAuth(state, loggedData){
             localStorage.setItem('user', JSON.stringify(loggedData))
-            state.isLogged = true;
+            state.isAuthenticated = true;
         },
         checkAuth(state, userData){
-            if(!state.isLogged){
+            if(!state.isAuthenticated){
                 let loggedUser = userData;
 
                 if(loggedUser){
                     loggedUser = JSON.parse(loggedUser);
                     if(loggedUser.email === state.dummyUser.email && loggedUser.token === state.dummyUser.token){
-                        state.isLogged = true
+                        state.isAuthenticated = true
                     }else{
-                        state.isLogged = false
+                        state.isAuthenticated = false
                     }
                 }
             }
@@ -45,7 +45,7 @@ const store = createStore({
         
         logoutUser(state, message){
             localStorage.clear();
-            state.isLogged = false;
+            state.isAuthenticated = false;
             state.cred = {
                 email: '',
                 password: ''

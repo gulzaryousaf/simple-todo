@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isLogged">
+  <div v-if="isAuthenticated">
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
@@ -29,7 +29,7 @@ import store from '../store'
     },
     computed: {
       ...mapState([
-          'isLogged',
+          'isAuthenticated',
           'cred'
         ]),
     },
