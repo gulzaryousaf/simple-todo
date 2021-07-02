@@ -19,22 +19,22 @@ const store = createStore({
             localStorage.setItem('user', JSON.stringify(loggedData))
             state.isAuthenticated = true;
         },
-        checkAuth(state, userData){
-            if(!state.isAuthenticated){
-                let loggedUser = userData;
+        userAuth(state, userData){
+            let loggedUser = userData;
 
-                if(loggedUser){
-                    loggedUser = JSON.parse(loggedUser);
-                    if(loggedUser.email === state.dummyUser.email && loggedUser.token === state.dummyUser.token){
-                        state.isAuthenticated = true
-                    }else{
-                        state.isAuthenticated = false
-                    }
+            if(loggedUser){
+                loggedUser = JSON.parse(loggedUser);
+                if(loggedUser.email === state.dummyUser.email && loggedUser.token === state.dummyUser.token){
+                    state.isAuthenticated = true;
+                }else{
+                    state.isAuthenticated = false;
                 }
             }
+
+            return state.isAuthenticated;
         },
 
-        updateUserCred(state, userData){
+        setUserCred(state, userData){
             if(typeof userData == 'string'){
                 let user = JSON.parse(userData)
                 state.cred[user.name] = user.value
@@ -43,35 +43,40 @@ const store = createStore({
             }
         },
         
-        logoutUser(state, message){
+        logoutUser(state){
             localStorage.clear();
             state.isAuthenticated = false;
             state.cred = {
                 email: '',
                 password: ''
             }
-            alert(message)
         }
     },
     actions: {
-        async login({commit}, credentials) {
-            let dummyUser= this.state.dummyUser;
-            if(credentials.email === dummyUser.email && credentials.password === dummyUser.password){
-                let loggedData = {email:dummyUser.email, token: dummyUser.token}
-                commit('setAuth', loggedData);
-                alert("Logged in")
-            }else{
-                alert("You email or passowrd is wrong!")
-            }
+        login({commit}, credentials) {
+            return new Promise((resolve, reject) => {
+                let dummyUser= this.state.dummyUser;
+                if(credentials.email === dummyUser.email && credentials.password === dummyUser.password){
+                    let loggedData = {email:dummyUser.email, token: dummyUser.token}
+                    commit('setAuth', loggedData);
+                    resolve("Logged in successfully!")
+                }else{
+                    reject("Please fill the Email and Password correctly!")
+                }
+            })
         },
         
-        async logout({commit}) {
-            commit('logoutUser', "User logged out!")
-            commit('updateUserCred', {email: '', password: ''})
+        logout({commit}) {
+            return new Promise(resolve =>{
+                commit('logoutUser')
+                // commit('setUserCred', {email: '', password: ''})
+                resolve("User logged out!")
+            })
         },
 
-        async checkUser( {commit}, userData){
-            commit('checkAuth', userData)            
+        checkAuth({commit}, userData){
+            commit('userAuth', userData)
+            return this.state.isAuthenticated
         }
     },
 })
