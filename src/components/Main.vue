@@ -23,10 +23,10 @@ export default {
     name: 'Main',
     methods: {
         userLogout(){
-        this.$store.dispatch('logout').then(response => {
-            this.$toast.show(response)
-            this.$router.push('/')
-        })
+            this.$store.dispatch('logout').then(response => {
+                this.$toast.show(response)
+                this.$router.push('/')
+            })
         }
     },
 }

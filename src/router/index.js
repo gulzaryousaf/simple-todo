@@ -31,7 +31,7 @@ const routes = [
   {
     path: '/addtodo',
     name: 'Addtodo',
-    component: () => import( /* webpackChunkName: "Todo" */ '../views/Addtodo.vue'),
+    component: () => import( /* webpackChunkName: "Addtodo" */ '../views/Addtodo.vue'),
     meta: {requiresAuth: true}
   },
   {

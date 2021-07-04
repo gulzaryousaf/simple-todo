@@ -40,6 +40,7 @@
 
 <script>
 import Main from '../components/Main';
+import {mapActions} from 'vuex'
 import { EyeIcon, TrashIcon } from '@heroicons/vue/outline'
 
 export default {
@@ -68,6 +69,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('todos', {removeTodo: 'removeTodo'}),
     loadMore: function () {
       this.itemsLength += 20;
       let startItems = this.itemsLength - 20;
@@ -93,19 +95,19 @@ export default {
     deleteTodo: function (e) {
       if(confirm("Are you sure you want to delete it?")){
         let todoID = Number(e.currentTarget.dataset.id);
-        this.$store.dispatch('todos/removeTodo', todoID).then(resp => {
+        this.removeTodo(todoID).then(resp => {
             if(resp){
               this.$toast.info(resp.msg);
               let data = JSON.parse(JSON.stringify(resp.data));
               this.allTodos = data;
   
-              let newData = JSON.parse(JSON.stringify(data));
-              newData.length = this.loadedTodos.length;
-              this.matchedTodos = newData;
+              let loadedData = JSON.parse(JSON.stringify(data));
+              loadedData.length = this.loadedTodos.length;
+              this.matchedTodos = loadedData;
             }
           })
       }
-    }
+    },
   },
   beforeMount(){
     this.loadMore();

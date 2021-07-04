@@ -15,6 +15,7 @@
     </div>
 </template>
 <script>
+import {mapActions} from 'vuex'
  export default {
     name: 'todo',
     data() {
@@ -35,12 +36,14 @@
       }
     },
     methods: {
+      ...mapActions('todos', {updateTodo: 'updateTodo'}),
+      
       updateCurrentTodo(e){
         this.updatedTodo[e.target.name] = e.target.value;
       },
 
       saveTodo(){
-        this.$store.dispatch('todos/updateTodo', this.updatedTodo).then(resp => {
+        this.updateTodo(this.updatedTodo).then(resp => {
           if(resp){
             this.$toast.success(resp);
             this.$router.push('/dashboard')
