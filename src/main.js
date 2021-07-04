@@ -5,8 +5,10 @@ import router from './router'
 import Toaster from '@meforma/vue-toaster';
 import './index.css'
 
-createApp(App)
+let vm = createApp(App)
 .use(router)
 .use(store)
 .use(Toaster)
 .mount('#app')
+
+export default vm;

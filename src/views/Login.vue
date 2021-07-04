@@ -23,16 +23,6 @@ import store from '../../store'
           'cred'
         ]),
     },
-    beforeCreate(){
-        store.dispatch('checkAuth', localStorage.getItem('user')).then(response => {
-            if(response){
-            this.$toast.info("You are already logged in, please logout to access this page")
-            this.$router.push('/dashboard')
-            }else{
-            this.$router.push('/login')
-            }
-        })
-    },
     methods: {
       seteUserData(e){
         store.commit('setUserCred', `{"name":"${e.target.name}", "value":"${e.target.value}"}`)

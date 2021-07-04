@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from '../../store'
+import {ifAuthenticated} from '../../middleware/authentication'
 
 const routes = [
   {
@@ -23,9 +23,15 @@ const routes = [
     component: () => import( /* webpackChunkName: "Welcome" */ '../views/Welcome.vue'),
   },
   {
-    path: '/about',
-    name: 'About',
-    component: () => import( /* webpackChunkName: "About" */ '../views/About.vue'),
+    path: '/todo/:id',
+    name: 'Todo',
+    component: () => import( /* webpackChunkName: "Todo" */ '../views/Todo.vue'),
+    meta: {requiresAuth: true}
+  },
+  {
+    path: '/addtodo',
+    name: 'Addtodo',
+    component: () => import( /* webpackChunkName: "Todo" */ '../views/Addtodo.vue'),
     meta: {requiresAuth: true}
   },
   {
@@ -42,23 +48,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next)=>{
-  if(to.matched.some(rt => rt.meta.requiresAuth)){
-    if(!store.state.isAuthenticated){
-      store.dispatch('checkAuth', localStorage.getItem('user')).then(response => {
-        if(response){
-          next();
-        }else{
-          next({
-            name: 'Login'
-          });
-        }
-      })
-    }else{
-      next();
-    }
-  }else{
-    next();
-  }
+  ifAuthenticated(to, from, next)  
 })
 
 export default router
